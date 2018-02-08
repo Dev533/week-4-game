@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+</head>
+<body>
+    <div id="container">
+        <div id="characters" class="row">
+        </div>
+        <div id="characters" class="row">
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-3.3.1.js" 
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" 
+    crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function(){
+        var chosenHero
+        var chosenEnemy
+        var isHeroAlive
+        var isEnemyAlive
+
+        function initGame () {
+            //generates characters
+            for ( var i = 0 ; i< charArr.length ; i++) {
+                var num = Math.floor(12 / charArr.length)
+                var num = 12 / charArr.length
+                // This will give us 6 columns of 2 since we have 6 characters. 12 / 6 = 2.
+                var charThing = $("<div class='col-md-"+num+"'><img src='"+charArr[i].image+"' style='width:150px;height:150px;'/></div>")
+                $("#characters").append(charThing)
+            }
+        }
+     // name, hp, strength, image
+     var charArr = [
+       { 
+        name : "Starlord",
+         hp : 50,
+         strength : 50,
+         image : "images/starlord.jpg"
+        },
+
+       { 
+        name : "Gamora",
+         hp : 50,
+         strength : 50,
+         image : "images/gamora.jpg"
+        },
+
+       { 
+        name : "Drax",
+         hp : 50,
+         strength : 50,
+         image : "images/drax.jpg"
+        },
+
+       { 
+        name : "Groot",
+         hp : 50,
+         strength : 50,
+         image : "images/groot.jpg"
+        },
+
+       { 
+        name : "Rocket",
+         hp : 50,
+         strength : 50,
+         image : "images/rocket.jpg"
+        },
+
+       { 
+        name : "Ronan",
+         hp : 50,
+         strength : 50,
+         image : "images/ronan.jpg"
+        },
+
+     ]
+
+    initGame()
+    })
+    </script>
+</body>
+</html>
