@@ -6,77 +6,154 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+    <style>
+    .fader {
+        opacity : 0.4;
+    }
+    </style>
 </head>
 <body>
-    <div id="container">
+    <div id="container"> 
         <div id="characters" class="row">
         </div>
-        <div id="characters" class="row">
+        <br>
+        <div id="gameplay" class="row">
+        
+            <div id="myCharacter" class="col-md-4"></div>
+            <div id="myRound" class="col-md-4">
+                <!--
+                <button id="attackBTN" class="btn btn-danger">ATTACK</button>
+                -->
+            </div>
+            <div id="myChallenger" class="col-md-4"></div>
+        
         </div>
     </div>
     <script src="http://code.jquery.com/jquery-3.3.1.js" 
     integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" 
     crossorigin="anonymous"></script>
+
     <script>
     $(document).ready(function(){
         var chosenHero
         var chosenEnemy
+        var isHeroChosen
+        var isEnemyChosen
         var isHeroAlive
         var isEnemyAlive
 
         function initGame () {
+            isHeroChosen = false
+            isEnemyChosen = false
+
             //generates characters
             for ( var i = 0 ; i< charArr.length ; i++) {
                 var num = Math.floor(12 / charArr.length)
                 var num = 12 / charArr.length
                 // This will give us 6 columns of 2 since we have 6 characters. 12 / 6 = 2.
-                var charThing = $("<div class='col-md-"+num+"'><img src='"+charArr[i].image+"' style='width:150px;height:150px;'/></div>")
+                var charThing = $("<div class='myChar col-md-"+
+                num+"' value='"+i+"'><img src='"+
+                charArr[i].image+"' style='width:150px;height:150px;'/></div>")
                 $("#characters").append(charThing)
             }
         }
+        // Your jQuery can't really see this code below (lines 39-40) which is why it doesn't work.
+        $(".myChar").on("click", function() {
+            alert("Hi")
+        })
+
+        //You'll have to do it like this...
+        $(document).on("click", ".myChar", function() {
+            if (isHeroChosen === false) {
+            chosenHero = charArr[$(this).attr("value")]
+            console.log(chosenHero)
+            $(this).addClass("fader")
+
+            console.log(chosenHero.name)
+
+            // Break the lines after each plus to make the code more readable.
+            // Make sure it's after the +, not after each element.
+            var charThing = $("<div class='myChar col-md-4' data-name='"+
+            chosenHero.name+"'><img src='"+
+            chosenHero.image+"' style='width:300px;height:300px;float:left;'/><h1 id='chosenHero'>"+
+            chosenHero.name+"</h1><h1 id='chosenHeroHP'>Health:"+
+            chosenHero.hp+"</h1></div>")
+            $("#myCharacter").append(charThing)
+
+            var middle = $("<div class='myChar col-md-4'></div>")
+            $("#myRound").append(middle)
+            
+            isHeroChosen = true
+            }
+            else if (isEnemyChosen === false && chosenHero.name != charArr[$(this).attr("value")
+            ].name) {
+            chosenEnemy = charArr[$(this).attr("value")]
+            console.log(chosenEnemy)
+            $(this).addClass("fader")
+
+            console.log(chosenEnemy.name)
+
+            var charThing = $("<div class='myChar col-md-4' date-name='"+
+            chosenEnemy.name+"'><img src='"+
+            chosenEnemy.image+"' style='width:300px;height:300px;float:right;'/><h1 id='chosenEnemy'>"+
+            chosenEnemy.name+"</h1><h1 id='chosenEnemyHP'>Health:"+
+            chosenEnemy.hp+"</div>")
+            $("#myChallenger").append(charThing)
+          
+            isEnemyChosen = true
+            }
+        })
+       // Need addtional code above to run the code below. See Panopto. There are IDs being called
+       // that we didn't do in class, but you can see them in the Panopto. Look around 2:31:53. Explore before 
+       // and after to get an idea.
+       // $("#attackBTN").on("click", function(){
+       //     chosenEnemy.hp -= Math.floor(Math.random()*20)
+       //     $("#enemyHP")
+       // })
+
+
      // name, hp, strength, image
      var charArr = [
        { 
         name : "Starlord",
-         hp : 50,
+         hp : 100,
          strength : 50,
-         image : "images/starlord.jpg"
+         image : "assets/images/starlord.jpg"
         },
 
        { 
         name : "Gamora",
-         hp : 50,
+         hp : 100,
          strength : 50,
-         image : "images/gamora.jpg"
+         image : "assets/images/gamora.jpg"
         },
 
        { 
         name : "Drax",
-         hp : 50,
+         hp : 100,
          strength : 50,
-         image : "images/drax.jpg"
+         image : "assets/images/drax.jpg"
         },
 
        { 
         name : "Groot",
-         hp : 50,
+         hp : 100,
          strength : 50,
-         image : "images/groot.jpg"
+         image : "assets/images/groot.jpg"
         },
 
        { 
         name : "Rocket",
-         hp : 50,
+         hp : 100,
          strength : 50,
-         image : "images/rocket.jpg"
+         image : "assets/images/rocket.jpg"
         },
 
        { 
         name : "Ronan",
-         hp : 50,
+         hp : 100,
          strength : 50,
-         image : "images/ronan.jpg"
+         image : "assets/images/ronan.jpg"
         },
 
      ]
@@ -86,3 +163,10 @@
     </script>
 </body>
 </html>
+
+
+<!-- When you enlarge the images, have them go into their own divs. 
+// Also, make the attack button and its functions.
+// Create the parts that keep score, etc. Look back at the Panopto 
+// video towards the end of class. Quenton shows a demo of what 
+// we're going for.-->
