@@ -63,7 +63,18 @@
                 herototal -= hpDeductHero;
                 console.log(herototal)
                 $('#chosenHeroHP').text(herototal)
-                
+
+                if (herototal <= 0) {
+                    $('#chosenHeroHP').text(0) // Just prints 0 if herototal is 0 or less.
+                    $('#attackBTN').hide()
+                    alert ('You are not a dancer! GAME OVER! Refresh your browser to play again.')
+                }
+                else if (enemytotal <= 0) {
+                    $('#chosenEnemyHP').text(enemytotal)
+                    $('#attackBTN').hide()
+                    confirm ('You won! Refresh the browser to play again.')
+                }
+
             }
             function initGame() {
                 isHeroChosen = false
