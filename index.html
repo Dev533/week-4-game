@@ -1,167 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
     <style>
-    .fader {
-        opacity : 0.4;
-    }
+        .fader {
+            opacity: 0.4;
+        }
     </style>
 </head>
+
 <body>
-    <div id="container"> 
+    <div id="container">
         <div id="characters" class="row">
         </div>
         <br>
         <div id="gameplay" class="row">
-        
+
             <div id="myCharacter" class="col-md-4"></div>
             <div id="myRound" class="col-md-4">
-                <!--
+
                 <button id="attackBTN" class="btn btn-danger">ATTACK</button>
-                -->
+
             </div>
             <div id="myChallenger" class="col-md-4"></div>
-        
+
         </div>
     </div>
-    <script src="http://code.jquery.com/jquery-3.3.1.js" 
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" 
-    crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
     <script>
-    $(document).ready(function(){
-        var chosenHero
-        var chosenEnemy
-        var isHeroChosen
-        var isEnemyChosen
-        var isHeroAlive
-        var isEnemyAlive
+        $(document).ready(function () {
+            var chosenHero
+            var chosenEnemy
+            var isHeroChosen
+            var isEnemyChosen
+            var isHeroAlive
+            var isEnemyAlive
 
-        function initGame () {
-            isHeroChosen = false
-            isEnemyChosen = false
+            // The button is still there in the HTML, but this hides the button.
+            // There is a function in the chosenEnemy click event that will show the button
+            // when the enemy or challenger character is chosen.
+            $('#attackBTN').hide()
 
-            //generates characters
-            for ( var i = 0 ; i< charArr.length ; i++) {
-                var num = Math.floor(12 / charArr.length)
-                var num = 12 / charArr.length
-                // This will give us 6 columns of 2 since we have 6 characters. 12 / 6 = 2.
-                var charThing = $("<div class='myChar col-md-"+
-                num+"' value='"+i+"'><img src='"+
-                charArr[i].image+"' style='width:150px;height:150px;'/></div>")
-                $("#characters").append(charThing)
+            function attackButton() {
+                var hpDeductEnemy = Math.floor(Math.random() * 20)
+                var hpDeductHero = Math.floor(Math.random() * 20)
+                console.log(hpDeductEnemy)
+                console.log(hpDeductHero)
+                enemytotal = parseInt($('#chosenEnemyHP').text())
+                enemytotal -= hpDeductEnemy;
+                console.log(enemytotal)
+                $('#chosenEnemyHP').text(enemytotal)
+                //console.log(parseInt($('#chosenEnemyHP').text()) - hpDeduct)
+                //Used above console log before breaking it out in lines 53 to 55.
+                herototal = parseInt($('#chosenHeroHP').text())
+                herototal -= hpDeductHero;
+                console.log(herototal)
+                $('#chosenHeroHP').text(herototal)
+                
             }
-        }
-        // Your jQuery can't really see this code below (lines 39-40) which is why it doesn't work.
-        $(".myChar").on("click", function() {
-            alert("Hi")
+            function initGame() {
+                isHeroChosen = false
+                isEnemyChosen = false
+
+                //generates characters
+                for (var i = 0; i < charArr.length; i++) {
+                    var num = Math.floor(12 / charArr.length)
+                    var num = 12 / charArr.length
+                    // This will give us 6 columns of 2 since we have 6 characters. 12 / 6 = 2.
+                    var charThing = $("<div class='myChar col-md-" +
+                        num + "' value='" + i + "'><img src='" +
+                        charArr[i].image + "' style='width:150px;height:150px;'/></div>")
+                    $("#characters").append(charThing)
+
+                }
+            }
+            // Your jQuery can't really see this code below (lines 39-40) which is why it doesn't work.
+            $(".myChar").on("click", function () {
+                alert("Hi")
+            })
+
+            //You'll have to do it like this...
+            $(document).on("click", ".myChar", function () {
+                if (isHeroChosen === false) {
+                    chosenHero = charArr[$(this).attr("value")]
+                    console.log(chosenHero)
+                    $(this).addClass("fader")
+
+                    console.log(chosenHero.name)
+
+                    // Break the lines after each plus to make the code more readable.
+                    // Make sure it's after the +, not after each element.
+                    var charThing = $("<div class='myChar col-md-4' data-name='" +
+                        chosenHero.name + "'><img src='" +
+                        chosenHero.image + "' style='width:300px;height:300px;float:left;'/><h1 id='chosenHero'>" +
+                        chosenHero.name + "</h1><h1 >Health: <span id='chosenHeroHP'>" +
+                        chosenHero.hp + "</span></h1></div>")
+                    $("#myCharacter").append(charThing)
+
+                    var middle = $("<div class='myChar col-md-4'></div>")
+                    $("#myRound").append(middle)
+
+                    isHeroChosen = true
+                }
+                else if (isEnemyChosen === false && chosenHero.name != charArr[$(this).attr("value")
+                ].name) {
+                    chosenEnemy = charArr[$(this).attr("value")]
+                    console.log(chosenEnemy)
+                    $(this).addClass("fader")
+
+                    console.log(chosenEnemy.name)
+
+                    var charThing = $("<div class='myChar col-md-4' date-name='" +
+                        chosenEnemy.name + "'><img src='" +
+                        chosenEnemy.image + "' style='width:300px;height:300px;float:right;'/><h1 id='chosenEnemy'>" +
+                        chosenEnemy.name + "</h1><h1 >Health: <span id='chosenEnemyHP'>" +
+                        chosenEnemy.hp + "</span></div>")
+                    $("#myChallenger").append(charThing)
+                    $('#attackBTN').show()
+                    isEnemyChosen = true
+                }
+
+                $('#attackBTN').on("click", function () {
+                    console.log('Did this work?')
+                    attackButton()
+
+                })
+
+            })
+            // Need additional code above to run the code below. See Panopto. There are IDs being called
+            // that we didn't do in class, but you can see them in the Panopto. Look around 2:31:53. Explore before 
+            // and after to get an idea.
+            // $("#attackBTN").on("click", function(){
+            //     chosenEnemy.hp -= Math.floor(Math.random()*20)
+            //     $("#enemyHP")
+            // })
+
+
+
+            var enemyHP =
+
+                $('')
+
+
+
+            // name, hp, strength, image
+            var charArr = [
+                {
+                    name: "Starlord",
+                    hp: 100,
+                    strength: 50,
+                    image: "assets/images/starlord.jpg"
+                },
+
+                {
+                    name: "Gamora",
+                    hp: 100,
+                    strength: 50,
+                    image: "assets/images/gamora.jpg"
+                },
+
+                {
+                    name: "Drax",
+                    hp: 100,
+                    strength: 50,
+                    image: "assets/images/drax.jpg"
+                },
+
+                {
+                    name: "Groot",
+                    hp: 100,
+                    strength: 50,
+                    image: "assets/images/groot.jpg"
+                },
+
+                {
+                    name: "Rocket",
+                    hp: 100,
+                    strength: 50,
+                    image: "assets/images/rocket.jpg"
+                },
+
+                {
+                    name: "Ronan",
+                    hp: 100,
+                    strength: 50,
+                    image: "assets/images/ronan.jpg"
+                },
+
+            ]
+
+            initGame()
+            attackButton()
         })
-
-        //You'll have to do it like this...
-        $(document).on("click", ".myChar", function() {
-            if (isHeroChosen === false) {
-            chosenHero = charArr[$(this).attr("value")]
-            console.log(chosenHero)
-            $(this).addClass("fader")
-
-            console.log(chosenHero.name)
-
-            // Break the lines after each plus to make the code more readable.
-            // Make sure it's after the +, not after each element.
-            var charThing = $("<div class='myChar col-md-4' data-name='"+
-            chosenHero.name+"'><img src='"+
-            chosenHero.image+"' style='width:300px;height:300px;float:left;'/><h1 id='chosenHero'>"+
-            chosenHero.name+"</h1><h1 id='chosenHeroHP'>Health:"+
-            chosenHero.hp+"</h1></div>")
-            $("#myCharacter").append(charThing)
-
-            var middle = $("<div class='myChar col-md-4'></div>")
-            $("#myRound").append(middle)
-            
-            isHeroChosen = true
-            }
-            else if (isEnemyChosen === false && chosenHero.name != charArr[$(this).attr("value")
-            ].name) {
-            chosenEnemy = charArr[$(this).attr("value")]
-            console.log(chosenEnemy)
-            $(this).addClass("fader")
-
-            console.log(chosenEnemy.name)
-
-            var charThing = $("<div class='myChar col-md-4' date-name='"+
-            chosenEnemy.name+"'><img src='"+
-            chosenEnemy.image+"' style='width:300px;height:300px;float:right;'/><h1 id='chosenEnemy'>"+
-            chosenEnemy.name+"</h1><h1 id='chosenEnemyHP'>Health:"+
-            chosenEnemy.hp+"</div>")
-            $("#myChallenger").append(charThing)
-          
-            isEnemyChosen = true
-            }
-        })
-       // Need addtional code above to run the code below. See Panopto. There are IDs being called
-       // that we didn't do in class, but you can see them in the Panopto. Look around 2:31:53. Explore before 
-       // and after to get an idea.
-       // $("#attackBTN").on("click", function(){
-       //     chosenEnemy.hp -= Math.floor(Math.random()*20)
-       //     $("#enemyHP")
-       // })
-
-
-     // name, hp, strength, image
-     var charArr = [
-       { 
-        name : "Starlord",
-         hp : 100,
-         strength : 50,
-         image : "assets/images/starlord.jpg"
-        },
-
-       { 
-        name : "Gamora",
-         hp : 100,
-         strength : 50,
-         image : "assets/images/gamora.jpg"
-        },
-
-       { 
-        name : "Drax",
-         hp : 100,
-         strength : 50,
-         image : "assets/images/drax.jpg"
-        },
-
-       { 
-        name : "Groot",
-         hp : 100,
-         strength : 50,
-         image : "assets/images/groot.jpg"
-        },
-
-       { 
-        name : "Rocket",
-         hp : 100,
-         strength : 50,
-         image : "assets/images/rocket.jpg"
-        },
-
-       { 
-        name : "Ronan",
-         hp : 100,
-         strength : 50,
-         image : "assets/images/ronan.jpg"
-        },
-
-     ]
-
-    initGame()
-    })
     </script>
 </body>
+
 </html>
 
 
